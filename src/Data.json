@@ -1,0 +1,51 @@
+{
+  "materials": [
+    {
+      "key":"Steel",
+      "yield_strength": 133.23,
+      "density": 34.12,      
+      "poission_ratio": 0.97 
+    },
+    {
+      "key":"Iron",
+      "yield_strength": 133.23,
+      "density": 34.12,
+      "poission_ratio": 0.97
+    },
+    {
+      "key":"Lead",
+      "yield_strength": 133.23,
+      "density": 34.12,
+      "poission_ratio": 0.97
+    }
+  ],
+ " SimulationType":{
+    "Commercial":{
+      "Solar":[
+        100,
+        105,
+        200
+      ],
+      "Demand":[
+        100,
+        105,
+        200
+      ]
+    },
+    "Residential":{
+      "Solar":[
+        100,
+        105,
+        200
+      ],
+      "Demand":[
+        100,
+        105,
+        200
+      ]
+    }
+  }
+}
+
+
+

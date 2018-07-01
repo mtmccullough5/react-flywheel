@@ -1,25 +1,24 @@
 import React from 'react'
-import { connect } from 'react-redux';
-import axios from 'axios';
-import { Link } from 'react-router-dom'
 import { Dropdown, Form, Card, Container } from 'semantic-ui-react'
+import data from './Data.json'
 
 class FlyBuild extends React.Component {
-  state = { materials: [], material: [], radius: 0.0, height: 0.0 }
-
-  componentDidMount() {
-    axios.get('/api/materials/index')
-      .then( ({ data }) => {
-        const newMaterials = data.map((mat) => {
-          mat.key = mat.name;
-          mat.text = mat.name;
-          mat.value = mat.name;
-          return mat;
-        });
-        this.setState({materials: newMaterials });
-      });
+  state = { 
+    materials: data.materials, 
+    material: [], 
+    materialOptions: [],
+    radius: 0.0, 
+    height: 0.0 
   }
-
+  componentDidMount() {
+    const materialOptions = this.state.materials.map((mat) => {
+      mat.text = mat.key;
+      mat.value = mat.key;
+      return mat;
+    });
+    console.log(materialOptions)
+    this.setState({materialOptions:materialOptions})
+  }
   handleChange = ({ target: { name, value } }) => {
     this.setState({ [name]: value });
   }
@@ -33,8 +32,9 @@ class FlyBuild extends React.Component {
 
   onMaterialSelect = ( e, data ) => {
     let material = []
+    console.log(data)
     data.options.map( mat => {
-      if (mat.name === data.value) {
+      if (mat.key === data.value) {
         material = mat
       }
       return material
@@ -43,7 +43,7 @@ class FlyBuild extends React.Component {
   }
 
   render() {
-    const { materials, material, radius, height} = this.state
+    const { materialOptions, material, radius, height} = this.state
     return (
       <div>
         <Container textAlign='center' >
@@ -57,7 +57,7 @@ class FlyBuild extends React.Component {
                     fluid
                     selection
                     onChange={this.onMaterialSelect}
-                    options={materials}
+                    options={materialOptions}
                     id='material'
                     name='material'
                     value={material.name}
@@ -84,12 +84,8 @@ class FlyBuild extends React.Component {
             </Card.Content>
           </Card>
         </Container>
-        <Link to="/Stats">See The Stats</Link>
       </div>
     )
   }
 }
-const mapStateToProps = (state) => {
-  return { material: state.material }
-}
-export default connect(mapStateToProps)(FlyBuild)
+export default FlyBuild

@@ -1,9 +1,9 @@
 import React from 'react'
 
-class FlyTest extends React.Component {
+class FlySim extends React.Component {
   render (){
     return <div></div>
   }
 }
 
-export default FlyTest
+export default FlySim
