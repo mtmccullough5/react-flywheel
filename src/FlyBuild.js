@@ -16,7 +16,6 @@ class FlyBuild extends React.Component {
       mat.value = mat.key;
       return mat;
     });
-    console.log(materialOptions)
     this.setState({materialOptions:materialOptions})
   }
   handleChange = ({ target: { name, value } }) => {
@@ -32,7 +31,6 @@ class FlyBuild extends React.Component {
 
   onMaterialSelect = ( e, data ) => {
     let material = []
-    console.log(data)
     data.options.map( mat => {
       if (mat.key === data.value) {
         material = mat
