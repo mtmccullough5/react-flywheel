@@ -35,7 +35,7 @@ class FlyBuild extends React.Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    let res = this.calculateParameters(this.calculateParameters.bind(this))
+    let res = this.calculateParameters()
     console.log(res)
     this.props.getEnergyStorage(this.state.energyStorage)
   }
@@ -57,7 +57,10 @@ class FlyBuild extends React.Component {
     let poissonRatio = this.state.material.poisson_ratio
     let { radius, height } = this.state
     const sigmaMax = yieldStrength
-    const omegaMax = Math.sqrt(sigmaMax/(((3+poissonRatio)/8)*density*radius^2))
+    const denominator = (((3+poissonRatio)/8)*density*radius^2)
+    //flash if radius is zero/find out what the cals output compared to 
+    //what they should
+    const omegaMax = Math.sqrt(sigmaMax/denominator)
     const maxSpeed = omegaMax/(2*Math.PI)*60
     const volume = Math.PI*radius^2*height
     const mass = volume*density
