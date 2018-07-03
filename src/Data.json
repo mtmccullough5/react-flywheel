@@ -4,19 +4,19 @@
       "key":"Steel",
       "yield_strength": 133.23,
       "density": 34.12,      
-      "poission_ratio": 0.97 
+      "poisson_ratio": 0.97 
     },
     {
       "key":"Iron",
       "yield_strength": 133.23,
       "density": 34.12,
-      "poission_ratio": 0.97
+      "poisson_ratio": 0.97
     },
     {
       "key":"Lead",
       "yield_strength": 133.23,
       "density": 34.12,
-      "poission_ratio": 0.97
+      "poisson_ratio": 0.97
     }
   ],
  " SimulationType":{
