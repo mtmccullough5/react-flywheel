@@ -2,7 +2,7 @@
 
 # dependencies
 /node_modules
-
+/Data.csv
 # testing
 /coverage
 

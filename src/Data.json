@@ -19,32 +19,176 @@
       "poisson_ratio": 0.97
     }
   ],
- " SimulationType":{
-    "Commercial":{
-      "Solar":[
-        100,
-        105,
-        200
-      ],
-      "Demand":[
-        100,
-        105,
-        200
-      ]
+  "simulation":[
+    {
+      "Hour": 0,
+      "Residential": 0.504996698535,
+      "School": 117.879645283,
+      "Medium Office": 38.9361841996,
+      "Restaurant": 14.8390255436
     },
-    "Residential":{
-      "Solar":[
-        100,
-        105,
-        200
-      ],
-      "Demand":[
-        100,
-        105,
-        200
-      ]
+    {
+      "Hour": 1,
+      "Residential": 0.467665244845,
+      "School": 117.859788394,
+      "Medium Office": 38.9361841996,
+      "Restaurant": 14.8608238676
+    },
+    {
+      "Hour": 2,
+      "Residential": 0.464523259435,
+      "School": 117.840153881,
+      "Medium Office": 38.9361841996,
+      "Restaurant": 14.8674816397
+    },
+    {
+      "Hour": 3,
+      "Residential": 0.470297184445,
+      "School": 118.250623675,
+      "Medium Office": 38.9361841996,
+      "Restaurant": 15.0127386242
+    },
+    {
+      "Hour": 4,
+      "Residential": 0.517849544883,
+      "School": 115.221678645,
+      "Medium Office": 39.149266878,
+      "Restaurant": 21.3802533036
+    },
+    {
+      "Hour": 5,
+      "Residential": 0.638354647699,
+      "School": 176.910129746,
+      "Medium Office": 67.3415882251,
+      "Restaurant": 34.1701678536
+    },
+    {
+      "Hour": 6,
+      "Residential": 0.783370955553,
+      "School": 381.79316473,
+      "Medium Office": 77.8465315174,
+      "Restaurant": 41.6761753695
+    },
+    {
+      "Hour": 7,
+      "Residential": 0.726601297358,
+      "School": 593.240866004,
+      "Medium Office": 144.62659096,
+      "Restaurant": 41.7348779705
+    },
+    {
+      "Hour": 8,
+      "Residential": 0.681556838417,
+      "School": 735.740941643,
+      "Medium Office": 137.03683843,
+      "Restaurant": 34.2885157252
+    },
+    {
+      "Hour": 9,
+      "Residential": 0.693043658003,
+      "School": 843.665501305,
+      "Medium Office": 133.098380059,
+      "Restaurant": 41.7986323545
+    },
+    {
+      "Hour": 10,
+      "Residential": 0.686253113016,
+      "School": 889.427553611,
+      "Medium Office": 136.974887687,
+      "Restaurant": 44.1655061338
+    },
+    {
+      "Hour": 11,
+      "Residential": 0.667864143281,
+      "School": 918.511081507,
+      "Medium Office": 139.462147591,
+      "Restaurant": 46.8387169578
+    },
+    {
+      "Hour": 12,
+      "Residential": 0.645640103336,
+      "School": 930.074894479,
+      "Medium Office": 145.613475838,
+      "Restaurant": 39.6552783787
+    },
+    {
+      "Hour": 13,
+      "Residential": 0.635604531574,
+      "School": 961.518912983,
+      "Medium Office": 146.930589143,
+      "Restaurant": 41.1610622679
+    },
+    {
+      "Hour": 14,
+      "Residential": 0.661068804555,
+      "School": 943.331875683,
+      "Medium Office": 145.484441942,
+      "Restaurant": 38.8516180099
+    },
+    {
+      "Hour": 15,
+      "Residential": 0.756091487629,
+      "School": 931.876027089,
+      "Medium Office": 141.205845456,
+      "Restaurant": 44.6867942729
+    },
+    {
+      "Hour": 16,
+      "Residential": 0.919799328276,
+      "School": 775.165609498,
+      "Medium Office": 124.404220407,
+      "Restaurant": 43.5608622989
+    },
+    {
+      "Hour": 17,
+      "Residential": 0.988254178146,
+      "School": 722.067383752,
+      "Medium Office": 83.1386533609,
+      "Restaurant": 44.1120840702
+    },
+    {
+      "Hour": 18,
+      "Residential": 1.00390574207,
+      "School": 642.12086549,
+      "Medium Office": 79.41778417,
+      "Restaurant": 35.269209254
+    },
+    {
+      "Hour": 19,
+      "Residential": 1.14775420809,
+      "School": 510.995907254,
+      "Medium Office": 75.7603386693,
+      "Restaurant": 37.5776545003
+    },
+    {
+      "Hour": 20,
+      "Residential": 1.28544859279,
+      "School": 118.194404057,
+      "Medium Office": 80.2043297815,
+      "Restaurant": 38.4470523133
+    },
+    {
+      "Hour": 21,
+      "Residential": 1.08570451141,
+      "School": 117.919335625,
+      "Medium Office": 41.6166002114,
+      "Restaurant": 38.3127619334
+    },
+    {
+      "Hour": 22,
+      "Residential": 0.827902194388,
+      "School": 118.859075334,
+      "Medium Office": 38.9361841996,
+      "Restaurant": 39.0662705311
+    },
+    {
+      "Hour": 23,
+      "Residential": 0.566410447683,
+      "School": 117.962935029,
+      "Medium Office": 38.9361841996,
+      "Restaurant": 22.3559553134
     }
-  }
+  ]
 }
 
 

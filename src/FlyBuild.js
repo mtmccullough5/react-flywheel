@@ -1,8 +1,8 @@
 import React from 'react'
 import { 
   Dropdown, 
-  Form, 
-  Card, 
+  Form,
+  Header, 
   Segment, 
   Label, 
   Container
@@ -73,8 +73,8 @@ class FlyBuild extends React.Component {
     return (
       <Container>
         <Segment>
-          <Card.Header as='h2'>Choose Flywheel Properties</Card.Header>
-          <Card.Content>
+          <Header as='h2'>Choose Flywheel Properties</Header>
+          <Container>
             <Form>
               <Label>Material Selection</Label>
               <Dropdown
@@ -109,16 +109,16 @@ class FlyBuild extends React.Component {
               />
               <Form.Button content='Test' onClick={this.handleSubmit}/>
             </Form>
-          </Card.Content>
+          </Container>
         </Segment>
         <Segment>
-          <Card.Header as='h2'>Flywheel Stats</Card.Header>
-          <Card.Content>
+          <Header as='h2'>Flywheel Stats</Header>
+          <Container>
             <Label>Max Speed (RPM)</Label>
             <Segment raised>{this.state.maxSpeed}</Segment>
             <Label>Energy Capacity (kWh)</Label>
             <Segment raised>{this.state.energyStorage}</Segment>
-          </Card.Content>
+          </Container>
         </Segment>
       </Container>
     )
