@@ -35,8 +35,7 @@ class FlyBuild extends React.Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    let res = this.calculateParameters()
-    console.log(res)
+    this.calculateParameters()
     this.props.getEnergyStorage(this.state.energyStorage)
   }
 
