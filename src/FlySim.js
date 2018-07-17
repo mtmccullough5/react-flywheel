@@ -1,5 +1,5 @@
 import React from 'react'
-import { Segment, Dropdown, Header } from 'semantic-ui-react'
+import { Segment, Dropdown, Header, Form } from 'semantic-ui-react'
 import { AreaChart, XAxis, YAxis, Area } from 'recharts'
 import appData from './Data.json'
 
@@ -8,7 +8,7 @@ class FlySim extends React.Component {
     simProfile: []
   }
 
-  onSimSelect = (e, data) => {
+  onSimSelect = ( e, data) => {
     let simType = data.value
     let simProfile = []
     appData.simulation.map( hour => {
@@ -18,8 +18,44 @@ class FlySim extends React.Component {
     this.setState({simProfile:simProfile})
   }
 
+
+  maxFinder = (demandProfile,storage,iter) => {
+    let max = Math.max(...demandProfile)
+    demandProfile = demandProfile.filter( e => e!== max )
+    let max2 = Math.max(...demandProfile)
+    if ((max-max2)*iter > storage){
+        var newMax = (max*iter-storage)/iter
+        return newMax
+     } 
+    else {
+        storage = storage-(max-max2)*iter
+        iter+=1
+        return this.maxFinder(demandProfile, storage, iter)
+     }
+  }
+
+
+  onSimRun = () => {
+    let simProfile = this.state.simProfile
+    let demandProfile = []
+    simProfile.map(hour =>{
+      return demandProfile.push(hour.energy)
+    })
+    let energyStorage = this.props.energyStorage
+    let max = this.maxFinder(demandProfile, energyStorage, 1) //add in actual storage
+    let newDemandProfile = []
+    simProfile.map( hour => {
+      if (hour.energy >= max) {
+        return newDemandProfile.push({hour: hour.hour, energy: max})
+      } else {
+        return newDemandProfile.push({hour: hour.hour, energy: hour.energy})
+      }
+    })
+    console.log(simProfile)
+    console.log(newDemandProfile)
+  }
+
   render (){
-    console.log(this.state.simProfile)
     return (
       <Segment>
         <Header>Simulation</Header>
@@ -48,6 +84,7 @@ class FlySim extends React.Component {
           <YAxis dataKey="energy"/>
           <Area type="monotone" dataKey="energy" stroke="#8884d8" fillOpacity={1} fill="url(#colorUv)" />
         </AreaChart>
+        <Form.Button content='Test' onClick={this.onSimRun}/>
       </Segment>
     )
   }

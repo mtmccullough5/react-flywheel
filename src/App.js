@@ -5,7 +5,9 @@ import FlyBuild from './FlyBuild';
 import FlySim from './FlySim';
 
 class App extends Component {
-
+  state = {
+    energyStorage: 0.0
+  }
   flywheelDataCall = (energyStorage) => {
     this.setState({energyStorage})
   }
@@ -13,13 +15,17 @@ class App extends Component {
   render() {
     return (
       <Container>
-          <Segment className='margery'><Header as='h1'>Try a Flywheel</Header></Segment>
+          <Segment className='margery'>
+            <Header as='h1'>
+              Build and Simulate an Energy Storage Flywheel
+            </Header>
+          </Segment>
           <Grid stretched>
             <Grid.Column width={4}>
               <FlyBuild getEnergyStorage = {this.flywheelDataCall}/>
             </Grid.Column>
             <Grid.Column width={12}>
-              <FlySim />
+              <FlySim energyStorage = {this.state.energyStorage}/>
             </Grid.Column>
           </Grid>
       </Container>
