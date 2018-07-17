@@ -5,27 +5,28 @@ import appData from './Data.json'
 
 class FlySim extends React.Component {
   state = {
-    simProfile: []
+    baseProfile: [],
+    chartData: []
   }
 
   onSimSelect = ( e, data) => {
     let simType = data.value
-    let simProfile = []
+    let baseProfile = []
     appData.simulation.map( hour => {
-      simProfile.push({ hour: hour.Hour, energy: hour[simType]})
-      return simProfile
+      baseProfile.push({ hour: hour.Hour, energy: hour[simType]})
+      return baseProfile
     })
-    this.setState({simProfile:simProfile})
+    this.setState({baseProfile:baseProfile})
   }
 
   average = (arr) => {
     return arr.reduce(( p, c ) => p + c, 0 ) / arr.length
   }
 
-  maxFinder = (demandProfile,storage,iter) => {
-    let max = Math.max(...demandProfile)
-    demandProfile = demandProfile.filter( e => e!== max )
-    let max2 = Math.max(...demandProfile)
+  maxFinder = (profile,storage,iter) => {
+    let max = Math.max(...profile)
+    profile = profile.filter( e => e!== max )
+    let max2 = Math.max(...profile)
     if ((max-max2)*iter > storage){
         let newMax = (max*iter-storage)/iter
         return newMax
@@ -33,14 +34,14 @@ class FlySim extends React.Component {
     else {
         storage = storage-(max-max2)*iter
         iter+=1
-        return this.maxFinder(demandProfile, storage, iter)
+        return this.maxFinder(profile, storage, iter)
      }
   }
 
-  minFinder = (demandProfile,storage,iter,demandAverage) => {
-    let min = Math.min(...demandProfile)
-    demandProfile = demandProfile.filter( e => e!== min )
-    let min2 = Math.min(...demandProfile)
+  minFinder = (profile,storage,iter) => {
+    let min = Math.min(...profile)
+    profile = profile.filter( e => e!== min )
+    let min2 = Math.min(...profile)
     if ((min2-min)*iter > storage){
         let newMin = (min*iter+storage)/iter
         return newMin
@@ -48,13 +49,13 @@ class FlySim extends React.Component {
     else {
         storage = storage-(min2-min)*iter
         iter+=1
-        return this.minFinder(demandProfile, storage, iter)
+        return this.minFinder(profile, storage, iter)
      }
   }
 
-  determineStorage = (demandProfile,flywheelStorage) => {
-    const demandAverage = this.average(demandProfile)
-    let [dischargeStorage,chargeStorage] = demandProfile.map( value => {
+  determineStorage = (profile,flywheelStorage) => {
+    const demandAverage = this.average(profile)
+    let [dischargeStorage,chargeStorage] = profile.map( value => {
       let dischargeStorage = 0
       let chargeStorage = 0
       if (value > demandAverage) {
@@ -69,27 +70,36 @@ class FlySim extends React.Component {
   }
 
   onSimRun = () => {
-    let simProfile = this.state.simProfile
-    let demandProfile = []
-    simProfile.map(hour =>{
-      return demandProfile.push(hour.energy)
+    let baseProfile = this.state.baseProfile
+    let simProfile = []
+    let profile = []
+    baseProfile.map(hour =>{
+      return profile.push(hour.energy)
     })
     let flywheelStorage = this.props.flywheelStorage
-    let storage = this.determineStorage(demandProfile,flywheelStorage)
-    let max = this.maxFinder(demandProfile, storage, 1)
-    let min = this.minFinder(demandProfile, storage, 1)
-    let newDemandProfile = []
-    simProfile.map( hour => {
+    let storage = this.determineStorage(profile,flywheelStorage)
+    let max = this.maxFinder(profile, storage, 1)
+    let min = this.minFinder(profile, storage, 1)
+    baseProfile.map( hour => {
       if (hour.energy >= max) {
-        return newDemandProfile.push({hour: hour.hour, energy: max})
+        return simProfile.push({hour: hour.hour, energy: max})
       } else if (hour.energy <= min) {
-        return newDemandProfile.push({hour: hour.hour, energy: min})
+        return simProfile.push({hour: hour.hour, energy: min})
       } else {
-        return newDemandProfile.push({hour: hour.hour, energy: hour.energy})
+        return simProfile.push({hour: hour.hour, energy: hour.energy})
       }
     })
-    console.log(simProfile)
-    console.log(newDemandProfile)
+    let chartData = []
+    baseProfile.map( (hour,index) => {
+      chartData.push({
+        hour:hour.hour, 
+        baseline:hour.energy, 
+        simulation:simProfile[index].energy
+      })
+      return chartData
+    }) 
+
+    this.setState({chartData:chartData})
   }
 
   render (){
@@ -109,7 +119,7 @@ class FlySim extends React.Component {
         <AreaChart 
           width={730} 
           height={250} 
-          data={this.state.simProfile}
+          data={this.state.chartData}
           margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
         >
             <defs>
@@ -123,15 +133,15 @@ class FlySim extends React.Component {
               </linearGradient>
             </defs>
           <XAxis dataKey="hour" />
-          <YAxis dataKey="energy"/>
+          <YAxis dataKey="baseline"/>
           <Tooltip />
           <Area type="monotone" dataKey="baseline" stroke="#8884d8" fillOpacity={1} fill="url(#colorUv)" />
-          
+          <Area type="monotone" dataKey="simulation" stroke="#82ca9d" fillOpacity={1} fill="url(#colorPv)" />
         </AreaChart>
 
       </Segment>
     )
   }
 }
-//<Area type="monotone" dataKey="withStorage" stroke="#82ca9d" fillOpacity={1} fill="url(#colorPv)" />
+
 export default FlySim
