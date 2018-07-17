@@ -6,10 +6,10 @@ import FlySim from './FlySim';
 
 class App extends Component {
   state = {
-    energyStorage: 0.0
+    flywheelStorage: 0.0
   }
-  flywheelDataCall = (energyStorage) => {
-    this.setState({energyStorage})
+  flywheelDataCall = (flywheelStorage) => {
+    this.setState({flywheelStorage})
   }
 
   render() {
@@ -25,7 +25,7 @@ class App extends Component {
               <FlyBuild getEnergyStorage = {this.flywheelDataCall}/>
             </Grid.Column>
             <Grid.Column width={12}>
-              <FlySim energyStorage = {this.state.energyStorage}/>
+              <FlySim flywheelStorage = {this.state.flywheelStorage}/>
             </Grid.Column>
           </Grid>
       </Container>
