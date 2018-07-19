@@ -1,6 +1,5 @@
 import React from 'react'
 import { 
-  Dropdown, 
   Form,
   Header, 
   Segment, 
@@ -11,22 +10,11 @@ import data from './Data.json'
 
 class FlyBuild extends React.Component {
   state = { 
-    materials: data.materials, 
-    material: [], 
-    materialOptions: [],
     radius: 0.0, 
     height: 0.0,
+    quantity: 0,
     energyStorage:0,
     maxSpeed:0 
-  }
-
-  componentDidMount() {
-    const materialOptions = this.state.materials.map((mat) => {
-      mat.text = mat.key;
-      mat.value = mat.key;
-      return mat;
-    });
-    this.setState({materialOptions:materialOptions})
   }
 
   handleChange = ({ target: { name, value } }) => {
@@ -35,59 +23,28 @@ class FlyBuild extends React.Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    let res = this.calculateParameters()
-    this.props.getEnergyStorage(res[1])
-  }
-
-  onMaterialSelect = ( e, data ) => {
-    let material = []
-    data.options.map( mat => {
-      if (mat.key === data.value) {
-        material = mat
-      }
-      return material
-    })
-    this.setState({material})
-  }
-
-  calculateParameters = () => {
-    let density = this.state.material.density
-    let yieldStrength = this.state.material.yield_strength
-    let poissonRatio = this.state.material.poisson_ratio
-    let { radius, height } = this.state
-    const sigmaMax = yieldStrength
-    const denominator = (((3+poissonRatio)/8)*density*radius^2)
-    //flash if radius is zero/find out what the cals output compared to 
-    //what they should
-    const omegaMax = Math.sqrt(sigmaMax/denominator)
-    const maxSpeed = omegaMax/(2*Math.PI)*60
-    const volume = Math.PI*radius^2*height
-    const mass = volume*density
-    const momentOfInertia = 0.5*mass*radius^2
-    const energyStorage = 0.5*momentOfInertia*omegaMax^2
-    return [ maxSpeed, energyStorage ]
+    const density = data.steel.density_kgm3
+    const yieldStrength = data.steel.yield_strength_Pa
+    const poissonRatio = data.steel.poisson_ratio
+    let { radius, height, quantity} = this.state
+    const denominator = (3+poissonRatio/8)*density*Math.pow(radius,2) //kg/m^3*m^2 = kg/m
+    const omegaMax = Math.sqrt(yieldStrength/denominator) // J/m^3*m/kg = J/(m^2*kg)
+    const maxSpeed = omegaMax/(2*Math.PI)*60 //
+    const volume = Math.PI*Math.pow(radius,2)*height //m^3
+    const mass = volume*density //kg
+    const momentOfInertia = 0.5*mass*Math.pow(radius,2) //kg*m^2
+    const energyStorage = 0.5*momentOfInertia*Math.pow(omegaMax,2)*quantity/1000/3600 // kgm^2*J/(m^2*kg)= J
+    this.props.getEnergyStorage(energyStorage)
+    this.setState({maxSpeed, energyStorage})
   }
   render() {
-    const { materialOptions, material, radius, height} = this.state
+    const { radius, height, quantity} = this.state
     return (
       <Container>
         <Segment>
           <Header as='h2'>Choose Flywheel Properties</Header>
           <Container>
             <Form>
-              <Label>Material Selection</Label>
-              <Dropdown
-                className='inputMargery'
-                placeholder='Select Material' 
-                fluid
-                selection
-                onChange={this.onMaterialSelect}
-                options={materialOptions}
-                id='material'
-                name='material'
-                value={material.key}
-              >
-              </Dropdown>
               <Label>Radius (m)</Label>    
               <Form.Input
                 className='inputMargery' 
@@ -106,6 +63,15 @@ class FlyBuild extends React.Component {
                 value={height}
                 onChange={this.handleChange}
               />
+              <Label>Quantity</Label>    
+              <Form.Input
+                className='inputMargery' 
+                fluid
+                placeholder="Quantity"
+                name="quantity"
+                value={quantity}
+                onChange={this.handleChange}
+              />
               <Form.Button content='Test' onClick={this.handleSubmit}/>
             </Form>
           </Container>
@@ -114,9 +80,9 @@ class FlyBuild extends React.Component {
           <Header as='h2'>Flywheel Stats</Header>
           <Container>
             <Label>Max Speed (RPM)</Label>
-            <Segment raised>{this.state.maxSpeed}</Segment>
+            <Segment raised>{this.state.maxSpeed.toFixed(0)}</Segment>
             <Label>Energy Capacity (kWh)</Label>
-            <Segment raised>{this.state.energyStorage}</Segment>
+            <Segment raised>{this.state.energyStorage.toFixed(1)}</Segment>
           </Container>
         </Segment>
       </Container>

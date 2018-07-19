@@ -1,192 +1,203 @@
 {
-  "materials": [
+  "steel": 
     {
-      "key":"Steel",
-      "yield_strength": 133.23,
-      "density": 34.12,      
-      "poisson_ratio": 0.97 
+      "yield_strength_Pa": 585e6,
+      "density_kgm3": 7.872e3,      
+      "poisson_ratio": 0.287 
     },
-    {
-      "key":"Iron",
-      "yield_strength": 133.23,
-      "density": 34.12,
-      "poisson_ratio": 0.97
-    },
-    {
-      "key":"Lead",
-      "yield_strength": 133.23,
-      "density": 34.12,
-      "poisson_ratio": 0.97
-    }
-  ],
+
   "simulation":[
     {
       "Hour": 0,
       "Residential": 0.504996698535,
       "School": 117.879645283,
       "MediumOffice": 38.9361841996,
-      "Restaurant": 14.8390255436
+      "Restaurant": 14.8390255436,
+      "peak":"off"
     },
     {
       "Hour": 1,
       "Residential": 0.467665244845,
       "School": 117.859788394,
       "MediumOffice": 38.9361841996,
-      "Restaurant": 14.8608238676
+      "Restaurant": 14.8608238676,
+      "peak":"off"
     },
     {
       "Hour": 2,
       "Residential": 0.464523259435,
       "School": 117.840153881,
       "MediumOffice": 38.9361841996,
-      "Restaurant": 14.8674816397
+      "Restaurant": 14.8674816397,
+      "peak":"off"
     },
     {
       "Hour": 3,
       "Residential": 0.470297184445,
       "School": 118.250623675,
       "MediumOffice": 38.9361841996,
-      "Restaurant": 15.0127386242
+      "Restaurant": 15.0127386242,
+      "peak":"off"
     },
     {
       "Hour": 4,
       "Residential": 0.517849544883,
       "School": 115.221678645,
       "MediumOffice": 39.149266878,
-      "Restaurant": 21.3802533036
+      "Restaurant": 21.3802533036,
+      "peak":"off"
     },
     {
       "Hour": 5,
       "Residential": 0.638354647699,
       "School": 176.910129746,
       "MediumOffice": 67.3415882251,
-      "Restaurant": 34.1701678536
+      "Restaurant": 34.1701678536,
+      "peak":"off"
     },
     {
       "Hour": 6,
       "Residential": 0.783370955553,
       "School": 381.79316473,
       "MediumOffice": 77.8465315174,
-      "Restaurant": 41.6761753695
+      "Restaurant": 41.6761753695,
+      "peak":"off"
     },
     {
       "Hour": 7,
       "Residential": 0.726601297358,
       "School": 593.240866004,
       "MediumOffice": 144.62659096,
-      "Restaurant": 41.7348779705
+      "Restaurant": 41.7348779705,
+      "peak":"off"
     },
     {
       "Hour": 8,
       "Residential": 0.681556838417,
       "School": 735.740941643,
       "MediumOffice": 137.03683843,
-      "Restaurant": 34.2885157252
+      "Restaurant": 34.2885157252,
+      "peak":"part"
     },
     {
       "Hour": 9,
       "Residential": 0.693043658003,
       "School": 843.665501305,
       "MediumOffice": 133.098380059,
-      "Restaurant": 41.7986323545
+      "Restaurant": 41.7986323545,
+      "peak":"part"
     },
     {
       "Hour": 10,
       "Residential": 0.686253113016,
       "School": 889.427553611,
       "MediumOffice": 136.974887687,
-      "Restaurant": 44.1655061338
+      "Restaurant": 44.1655061338,
+      "peak":"part"
     },
     {
       "Hour": 11,
       "Residential": 0.667864143281,
       "School": 918.511081507,
       "MediumOffice": 139.462147591,
-      "Restaurant": 46.8387169578
+      "Restaurant": 46.8387169578,
+      "peak":"part"
     },
     {
       "Hour": 12,
       "Residential": 0.645640103336,
       "School": 930.074894479,
       "MediumOffice": 145.613475838,
-      "Restaurant": 39.6552783787
+      "Restaurant": 39.6552783787,
+      "peak":"peak"
     },
     {
       "Hour": 13,
       "Residential": 0.635604531574,
       "School": 961.518912983,
       "MediumOffice": 146.930589143,
-      "Restaurant": 41.1610622679
+      "Restaurant": 41.1610622679,
+      "peak":"peak"
     },
     {
       "Hour": 14,
       "Residential": 0.661068804555,
       "School": 943.331875683,
       "MediumOffice": 145.484441942,
-      "Restaurant": 38.8516180099
+      "Restaurant": 38.8516180099,
+      "peak":"peak"
     },
     {
       "Hour": 15,
       "Residential": 0.756091487629,
       "School": 931.876027089,
       "MediumOffice": 141.205845456,
-      "Restaurant": 44.6867942729
+      "Restaurant": 44.6867942729,
+      "peak":"peak"
     },
     {
       "Hour": 16,
       "Residential": 0.919799328276,
       "School": 775.165609498,
       "MediumOffice": 124.404220407,
-      "Restaurant": 43.5608622989
+      "Restaurant": 43.5608622989,
+      "peak":"peak"
     },
     {
       "Hour": 17,
       "Residential": 0.988254178146,
       "School": 722.067383752,
       "MediumOffice": 83.1386533609,
-      "Restaurant": 44.1120840702
+      "Restaurant": 44.1120840702,
+      "peak":"peak"
     },
     {
       "Hour": 18,
       "Residential": 1.00390574207,
       "School": 642.12086549,
       "MediumOffice": 79.41778417,
-      "Restaurant": 35.269209254
+      "Restaurant": 35.269209254,
+      "peak":"peak"
     },
     {
       "Hour": 19,
       "Residential": 1.14775420809,
       "School": 510.995907254,
       "MediumOffice": 75.7603386693,
-      "Restaurant": 37.5776545003
+      "Restaurant": 37.5776545003,
+      "peak":"part"
     },
     {
       "Hour": 20,
       "Residential": 1.28544859279,
       "School": 118.194404057,
       "MediumOffice": 80.2043297815,
-      "Restaurant": 38.4470523133
+      "Restaurant": 38.4470523133,
+      "peak":"part"
     },
     {
       "Hour": 21,
       "Residential": 1.08570451141,
       "School": 117.919335625,
       "MediumOffice": 41.6166002114,
-      "Restaurant": 38.3127619334
+      "Restaurant": 38.3127619334,
+      "peak":"part"
     },
     {
       "Hour": 22,
       "Residential": 0.827902194388,
       "School": 118.859075334,
       "MediumOffice": 38.9361841996,
-      "Restaurant": 39.0662705311
+      "Restaurant": 39.0662705311,
+      "peak":"part"
     },
     {
       "Hour": 23,
       "Residential": 0.566410447683,
       "School": 117.962935029,
       "MediumOffice": 38.9361841996,
-      "Restaurant": 22.3559553134
+      "Restaurant": 22.3559553134,
+      "peak":"part"
     }
   ],
   "simOptions": [
