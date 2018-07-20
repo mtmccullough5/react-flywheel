@@ -21,21 +21,24 @@ class FlyBuild extends React.Component {
     this.setState({ [name]: value });
   }
 
-  handleSubmit = (e) => {
+  handleBlur = (e) => {
     e.preventDefault();
-    const density = data.steel.density_kgm3
-    const yieldStrength = data.steel.yield_strength_Pa
-    const poissonRatio = data.steel.poisson_ratio
     let { radius, height, quantity} = this.state
-    const denominator = (3+poissonRatio/8)*density*Math.pow(radius,2) //kg/m^3*m^2 = kg/m
-    const omegaMax = Math.sqrt(yieldStrength/denominator) // J/m^3*m/kg = J/(m^2*kg)
-    const maxSpeed = omegaMax/(2*Math.PI)*60 //
-    const volume = Math.PI*Math.pow(radius,2)*height //m^3
-    const mass = volume*density //kg
-    const momentOfInertia = 0.5*mass*Math.pow(radius,2) //kg*m^2
-    const energyStorage = 0.5*momentOfInertia*Math.pow(omegaMax,2)*quantity/1000/3600 // kgm^2*J/(m^2*kg)= J
-    this.props.getEnergyStorage(energyStorage)
-    this.setState({maxSpeed, energyStorage})
+    if (radius > 0 && height > 0 && quantity > 0) {
+      const density = data.steel.density_kgm3
+      const yieldStrength = data.steel.yield_strength_Pa
+      const poissonRatio = data.steel.poisson_ratio
+      let { radius, height, quantity} = this.state
+      const denominator = (3+poissonRatio/8)*density*Math.pow(radius,2) //kg/m^3*m^2 = kg/m
+      const omegaMax = Math.sqrt(yieldStrength/denominator) // J/m^3*m/kg = J/(m^2*kg)
+      const maxSpeed = omegaMax/(2*Math.PI)*60 //
+      const volume = Math.PI*Math.pow(radius,2)*height //m^3
+      const mass = volume*density //kg
+      const momentOfInertia = 0.5*mass*Math.pow(radius,2) //kg*m^2
+      const energyStorage = 0.5*momentOfInertia*Math.pow(omegaMax,2)*quantity/1000/3600 // kgm^2*J/(m^2*kg)= J
+      this.props.getEnergyStorage(energyStorage)
+      this.setState({maxSpeed, energyStorage})
+    }
   }
   render() {
     const { radius, height, quantity} = this.state
@@ -53,6 +56,7 @@ class FlyBuild extends React.Component {
                 name="radius"
                 value={radius}
                 onChange={this.handleChange}
+                onBlur={this.handleBlur}
               />
               <Label>Height (m)</Label>
               <Form.Input 
@@ -62,6 +66,7 @@ class FlyBuild extends React.Component {
                 name='height'
                 value={height}
                 onChange={this.handleChange}
+                onBlur={this.handleBlur}
               />
               <Label>Quantity</Label>    
               <Form.Input
@@ -71,8 +76,8 @@ class FlyBuild extends React.Component {
                 name="quantity"
                 value={quantity}
                 onChange={this.handleChange}
+                onBlur={this.handleBlur}
               />
-              <Form.Button content='Test' onClick={this.handleSubmit}/>
             </Form>
           </Container>
         </Segment>
