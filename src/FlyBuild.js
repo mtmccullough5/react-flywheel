@@ -4,9 +4,9 @@ import {
   Header, 
   Segment, 
   Label, 
-  Container
-  } from 'semantic-ui-react'
-import data from './Data.json'
+  Container,
+  Dropdown } from 'semantic-ui-react'
+import appData from './Data.json'
 
 class FlyBuild extends React.Component {
   state = { 
@@ -25,9 +25,9 @@ class FlyBuild extends React.Component {
     e.preventDefault();
     let { radius, height, quantity} = this.state
     if (radius > 0 && height > 0 && quantity > 0) {
-      const density = data.steel.density_kgm3
-      const yieldStrength = data.steel.yield_strength_Pa
-      const poissonRatio = data.steel.poisson_ratio
+      const density = appData.steel.density_kgm3
+      const yieldStrength = appData.steel.yield_strength_Pa
+      const poissonRatio = appData.steel.poisson_ratio
       let { radius, height, quantity} = this.state
       const denominator = (3+poissonRatio/8)*density*Math.pow(radius,2) //kg/m^3*m^2 = kg/m
       const omegaMax = Math.sqrt(yieldStrength/denominator) // J/m^3*m/kg = J/(m^2*kg)
@@ -36,15 +36,28 @@ class FlyBuild extends React.Component {
       const mass = volume*density //kg
       const momentOfInertia = 0.5*mass*Math.pow(radius,2) //kg*m^2
       const energyStorage = 0.5*momentOfInertia*Math.pow(omegaMax,2)*quantity/1000/3600 // kgm^2*J/(m^2*kg)= J
-      this.props.getEnergyStorage(energyStorage)
+      this.props.getFlywheelStorage(energyStorage)
       this.setState({maxSpeed, energyStorage})
     }
   }
+
+  onSimSelect = ( e, data) => {
+    let simType = data.value
+    let baseProfile = []
+    appData.simulation.map( hour => {
+      baseProfile.push({ hour: hour.Hour, energy: hour[simType]})
+      return baseProfile
+    })
+    this.props.getBaseProfile(baseProfile)
+    this.setState({baseProfile:baseProfile})
+  }
+
+
   render() {
     const { radius, height, quantity} = this.state
     return (
       <Container>
-        <Segment>
+        <Segment color="olive">
           <Header as='h2'>Choose Flywheel Properties</Header>
           <Container>
             <Form>
@@ -81,14 +94,16 @@ class FlyBuild extends React.Component {
             </Form>
           </Container>
         </Segment>
-        <Segment>
-          <Header as='h2'>Flywheel Stats</Header>
-          <Container>
-            <Label>Max Speed (RPM)</Label>
-            <Segment raised>{this.state.maxSpeed.toFixed(0)}</Segment>
-            <Label>Energy Capacity (kWh)</Label>
-            <Segment raised>{this.state.energyStorage.toFixed(1)}</Segment>
-          </Container>
+        <Segment color="olive">
+        <Header>Simulation Type</Header>
+          <Dropdown
+            className='inputMargery'
+            placeholder='Select Simulation Type' 
+            fluid
+            selection
+            onChange={this.onSimSelect}
+            options={appData.simOptions}
+          />
         </Segment>
       </Container>
     )
