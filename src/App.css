@@ -1,5 +1,9 @@
 .margery {
-  margin-top: 2.5% !important;
+  padding-top: 2.5% !important;
+}
+
+body {
+  padding: 20px !important;
 }
 
 .inputMargery {

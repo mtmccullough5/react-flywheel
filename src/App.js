@@ -18,25 +18,30 @@ class App extends Component {
   render() {
     return (
       <Container>
-          <Segment className='margery' color='blue'>
-            <Header as='h1'>
-              Build and Simulate an Energy Storage Flywheel
-            </Header>
-          </Segment>
-          <Grid stretched>
-            <Grid.Column width={4}>
-              <FlyBuild 
-                getFlywheelStorage = {this.flywheelStorageCall}
-                getBaseProfile = {this.baseProfileCall}
-              />
-            </Grid.Column>
-            <Grid.Column width={12}>
-              <FlySim 
-                flywheelStorage = {this.state.flywheelStorage}
-                baseProfile = {this.state.baseProfile}
-              />
-            </Grid.Column>
-          </Grid>
+        <Container>
+            <Segment className='margery' color='blue'>
+              <Header as='h1'>
+                Build and Simulate an Energy Storage Flywheel
+              </Header>
+            </Segment>
+            <Grid stackable stretched>
+              <Grid.Column width={4}>
+                <FlyBuild 
+                  getFlywheelStorage = {this.flywheelStorageCall}
+                  getBaseProfile = {this.baseProfileCall}
+                />
+              </Grid.Column>
+              <Grid.Column width={12}>
+                <FlySim 
+                  flywheelStorage = {this.state.flywheelStorage}
+                  baseProfile = {this.state.baseProfile}
+                />
+              </Grid.Column>
+            </Grid>
+        </Container>
+        <br />
+        <span>Version 1.0 Copyright &copy; 2018  Matthew McCullough </span>
+        <a href="https://github.com/mtmccullough5/react-flywheel">Source</a>
       </Container>
     );
   }

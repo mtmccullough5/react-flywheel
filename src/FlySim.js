@@ -104,7 +104,7 @@ class FlySim extends React.Component {
               <XAxis dataKey="hour"/>
               <YAxis 
                 dataKey="simulation" 
-                label={{ value: "kWh", angle: -90, position: 'insideLeft', offset:15 }}
+                label={{ value: "kW", angle: -90, position: 'insideLeft', offset:15 }}
               />
               <Tooltip />
               <Legend verticalAlign="bottom" height={30}/>
