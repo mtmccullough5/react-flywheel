@@ -13,114 +13,82 @@ import {
   Area, 
   Tooltip,
   Legend,
-  ResponsiveContainer} from 'recharts'
+  ResponsiveContainer
+} from 'recharts'
 
 
 class FlySim extends React.Component {
   state = {
-    baseProfile: [],
-    chartData: [],
-    flywheelStorage: 0.0,
+    peakStart:12,
+    peakEnd:18,
+    offPeakStart:21,
+    offPeakEnd: 9,
+    rateSchedule: {
+      offPeak: 0.217,
+      onPeak: 0.268
+    }
   }
-
-  componentDidUpdate(prevProps) {
-    
+  shouldComponentUpdate(nextProps) {
+    if (nextProps.flywheelStorage !== 0 && nextProps.baseProfile.length === 24) {
+      return true
+    }
+    return false
   } 
-
-  average = (arr) => {
-    return arr.reduce(( p, c ) => p + c, 0 ) / arr.length
-  }
-
-  maxFinder = (profile,storage,iter) => {
-    let max = Math.max(...profile)
-    profile = profile.filter( e => e!== max )
-    let max2 = Math.max(...profile)
-    if ((max-max2)*iter > storage){
-        let newMax = (max*iter-storage)/iter
-        return newMax
-     } 
-    else {
-        storage = storage-(max-max2)*iter
-        iter+=1
-        return this.maxFinder(profile, storage, iter)
-     }
-  }
-
-  minFinder = (profile,storage,iter) => {
-    let min = Math.min(...profile)
-    profile = profile.filter( e => e!== min )
-    let min2 = Math.min(...profile)
-    if ((min2-min)*iter > storage){
-        let newMin = (min*iter+storage)/iter
-        return newMin
-     } 
-    else {
-        storage = storage-(min2-min)*iter
-        iter+=1
-        return this.minFinder(profile, storage, iter)
-     }
-  }
-
-  determineStorage = (profile,flywheelStorage) => {
-    const demandAverage = this.average(profile)
-    let [dischargeStorage,chargeStorage] = profile.map( value => {
-      let dischargeStorage = 0
-      let chargeStorage = 0
-      if (value > demandAverage) {
-        return dischargeStorage+=value
-      }
-      else if (value < demandAverage) {
-        return chargeStorage+=value
-      }
-      return [dischargeStorage,chargeStorage]
-    })
-    return Math.min(dischargeStorage, chargeStorage, flywheelStorage)
-  }
-  //<Form.Button content='Test' onClick={this.onSimRun}/>
-  onSimRun = () => {
-    let baseProfile = this.props.baseProfile
+  
+  simProfileBuild = (baseProfile,energyStorage) => {
     let simProfile = []
-    let profile = []
-    baseProfile.map(hour => {
-      return profile.push(hour.energy)
-    })
-    let flywheelStorage = this.props.flywheelStorage
-    let storage = this.determineStorage(profile,flywheelStorage)
-    let max = this.maxFinder(profile, storage, 1)
-    let min = this.minFinder(profile, storage, 1)
-    baseProfile.map( hour => {
-      if (hour.energy >= max) {
-        return simProfile.push({hour: hour.hour, energy: max})
-      } else if (hour.energy <= min) {
-        return simProfile.push({hour: hour.hour, energy: min})
+    const peakPeriod = this.state.peakEnd-this.state.peakStart
+    baseProfile.map( (demand,index) => {
+      if (index > this.state.peakStart && index < this.state.peakEnd) {
+        simProfile.push(demand-energyStorage/(peakPeriod))
       } else {
-        return simProfile.push({hour: hour.hour, energy: hour.energy})
-      }
+        simProfile.push(demand+energyStorage/(baseProfile.length-(peakPeriod)))
+      } return simProfile
     })
+    return simProfile
+  }
+
+  chartDataBuild = (baseProfile,simProfile) => {
     let chartData = []
-    baseProfile.map( (hour,index) => {
+    baseProfile.map( (value,index) => {
       chartData.push({
-        hour:hour.hour, 
-        baseline:hour.energy, 
-        simulation:simProfile[index].energy
+        hour:index, 
+        baseline:value, 
+        simulation:simProfile[index]
       })
       return chartData
-    }) 
-
-    this.setState({chartData:chartData})
+    })
+    return chartData
   }
 
-  render (){
+  render () {
+    let baseProfile = []
+    let simProfile = []
+    let flywheelStorage = 0
+    let chartData = []
+    let costSavings = 0
+    const offPeakRate = this.state.rateSchedule.offPeak
+    const onPeakRate = this.state.rateSchedule.onPeak
+    const daysPerYear = 365
+    if (this.props.flywheelStorage !== 0 && this.props.baseProfile.length === 24) {
+      baseProfile = this.props.baseProfile
+      flywheelStorage = this.props.flywheelStorage
+      simProfile = this.simProfileBuild(baseProfile,flywheelStorage)
+      chartData = this.chartDataBuild(baseProfile,simProfile)
+      costSavings = flywheelStorage*(onPeakRate-offPeakRate)*daysPerYear
+    }
+    
+
     return (
       <Segment color="blue">
-        <Grid columns={3}>
+        <Grid columns={2}>
         <Grid.Row>
         <ResponsiveContainer 
           minWidth={200} 
           minHeight={300}
           height="80%">
           <AreaChart 
-              data={this.state.chartData}
+              data={chartData}
               margin={{ top: 20, right: 10, left: 0, bottom: 20 }}
             >
               <defs>
@@ -134,7 +102,7 @@ class FlySim extends React.Component {
                 </linearGradient>
               </defs>
             <XAxis dataKey="hour" />
-            <YAxis dataKey="baseline"/>
+            <YAxis dataKey="simulation"/>
             <Tooltip />
             <Legend verticalAlign="bottom" height={36}/>
             <Area type="monotone" dataKey="baseline" stroke="#8884d8" fillOpacity={1} fill="url(#colorUv)" />
@@ -152,14 +120,8 @@ class FlySim extends React.Component {
         </Grid.Column>
         <Grid.Column>
             <Container>
-              <Label>Energy Capacity (kWh)</Label>
-              <Segment raised>{this.props.flywheelStorage.toFixed(1)}</Segment>
-            </Container>
-        </Grid.Column>
-        <Grid.Column>
-            <Container>
-              <Label>Energy Capacity (kWh)</Label>
-              <Segment raised>{this.props.flywheelStorage.toFixed(1)}</Segment>
+              <Label>Energy Cost Savings($/year)</Label>
+              <Segment raised>{costSavings.toFixed(1)}</Segment>
             </Container>
         </Grid.Column>
         </Grid.Row>

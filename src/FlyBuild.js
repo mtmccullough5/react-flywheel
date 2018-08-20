@@ -45,7 +45,7 @@ class FlyBuild extends React.Component {
     let simType = data.value
     let baseProfile = []
     appData.simulation.map( hour => {
-      baseProfile.push({ hour: hour.Hour, energy: hour[simType]})
+      baseProfile.push(hour[simType])
       return baseProfile
     })
     this.props.getBaseProfile(baseProfile)
