@@ -19,8 +19,8 @@ import {
 
 class FlySim extends React.Component {
   state = {
-    peakStart:12,
-    peakEnd:18,
+    peakStart:13,
+    peakEnd:19,
     offPeakStart:21,
     offPeakEnd: 9,
     rateSchedule: {
@@ -83,34 +83,37 @@ class FlySim extends React.Component {
       <Segment color="blue">
         <Grid columns={2}>
         <Grid.Row>
-        <ResponsiveContainer 
-          minWidth={200} 
-          minHeight={300}
-          height="80%">
-          <AreaChart 
-              data={chartData}
-              margin={{ top: 20, right: 10, left: 0, bottom: 20 }}
-            >
-              <defs>
-                <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8}/>
-                  <stop offset="95%" stopColor="#8884d8" stopOpacity={0}/>
-                </linearGradient>
-                <linearGradient id="colorPv" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#82ca9d" stopOpacity={0.8}/>
-                  <stop offset="95%" stopColor="#82ca9d" stopOpacity={0}/>
-                </linearGradient>
-              </defs>
-            <XAxis dataKey="hour" />
-            <YAxis dataKey="simulation"/>
-            <Tooltip />
-            <Legend verticalAlign="bottom" height={36}/>
-            <Area type="monotone" dataKey="baseline" stroke="#8884d8" fillOpacity={1} fill="url(#colorUv)" />
-            <Area type="monotone" dataKey="simulation" stroke="#82ca9d" fillOpacity={1} fill="url(#colorPv)" />
-          </AreaChart>
-        </ResponsiveContainer>
+          <ResponsiveContainer 
+            minWidth={200} 
+            minHeight={320}
+            height="100%">
+            <AreaChart 
+                data={chartData}
+                margin={{ top: 20, right: 30, left: 0, bottom: 0 }}
+              >
+                <defs>
+                  <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8}/>
+                    <stop offset="95%" stopColor="#8884d8" stopOpacity={0}/>
+                  </linearGradient>
+                  <linearGradient id="colorPv" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#82ca9d" stopOpacity={0.8}/>
+                    <stop offset="95%" stopColor="#82ca9d" stopOpacity={0}/>
+                  </linearGradient>
+                </defs>
+              <XAxis dataKey="hour"/>
+              <YAxis 
+                dataKey="simulation" 
+                label={{ value: "kWh", angle: -90, position: 'insideLeft', offset:15 }}
+              />
+              <Tooltip />
+              <Legend verticalAlign="bottom" height={30}/>
+              <Area type="monotone" dataKey="baseline" stroke="#8884d8" fillOpacity={1} fill="url(#colorUv)" />
+              <Area type="monotone" dataKey="simulation" stroke="#82ca9d" fillOpacity={1} fill="url(#colorPv)" />
+            </AreaChart>
+          </ResponsiveContainer>
         </Grid.Row>
-        <Divider/>
+        <Divider />
         <Grid.Row>
         <Grid.Column>
             <Container>
@@ -121,7 +124,7 @@ class FlySim extends React.Component {
         <Grid.Column>
             <Container>
               <Label>Energy Cost Savings($/year)</Label>
-              <Segment raised>{costSavings.toFixed(1)}</Segment>
+              <Segment raised>{costSavings.toFixed(0)}</Segment>
             </Container>
         </Grid.Column>
         </Grid.Row>
